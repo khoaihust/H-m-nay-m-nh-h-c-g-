@@ -1,0 +1,55 @@
+Run code on https://jsfiddle.net/
+
+HTML:
+  <div id = 'ytplayer'></div>
+  
+CSS:
+  None
+  
+JS:
+  var tag = document.createElement('script');
+  tag.src = 'https://www.youtube.com/player_api';
+  var firstScriptTag = document.getElementsByTagName('script')[0];
+  firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+  var videoId = 'Mn8fXh04Nog';
+  var startSeconds = 16;
+  var endSeconds = 50;
+
+  var player;
+
+  var playerConfig = {
+    height: '9',
+    width: '16',
+    videoId: videoId,
+    playerVars: {
+      autoplay: 1,
+      controls: 0,
+      showinfo: 0,
+      modestbranding: 1,
+      fs: 1,
+      cc_load_policy: 0,
+      iv_load_policy: 3,
+      start: startSeconds,
+      end: endSeconds,
+      autohide: 0,
+    },
+    events: {
+      'onStateChange': onStateChange
+    }
+  };
+
+  function onYouTubePlayerAPIReady(){
+    player = new YT.Player('ytplayer', playerConfig);
+  }
+
+  function onStateChange(state) {
+    if (state.data === YT.PlayerState.ENDED) {
+      player.loadVideoById({
+        videoId: videoId,
+        startSeconds: startSeconds,
+        endSeconds: endSeconds
+      });
+    }
+  }
+  
